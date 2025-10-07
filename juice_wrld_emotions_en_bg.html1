@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Juice WRLD — Emotional Map (Bright Photo)</title>
+<style>
+  :root{--text:#fff}
+  html,body{height:100%;margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial;}
+  body{display:flex;align-items:center;justify-content:center;background:#000;color:var(--text);}
+  .wrap{position:relative;width:100%;max-width:1000px;height:90vh;border-radius:12px;overflow:hidden;box-shadow:0 20px 50px rgba(0,0,0,0.6)}
+  /* BACKGROUND: replace 'images.jfif' with your image filename in same folder */
+  .bg{position:absolute;inset:0;background-image:url("images.jfif");background-size:cover;background-position:center;filter:none;transform:scale(1.02);}
+  .overlay{position:absolute;inset:0;background:linear-gradient(180deg, rgba(0,0,0,0.0) 0%, rgba(0,0,0,0.0) 100%);pointer-events:none;}
+  .content{position:relative;z-index:2;display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;padding:28px;text-align:center;}
+  h1{margin:0 0 18px;font-size:clamp(20px,3vw,36px);text-shadow:0 4px 18px rgba(0,0,0,0.5);}
+  .map{display:flex;flex-wrap:wrap;gap:12px;justify-content:center;max-width:720px;}
+  .emotion{padding:12px 20px;border-radius:999px;background:rgba(0,0,0,0.45);border:1px solid rgba(255,255,255,0.08);color:var(--text);cursor:pointer;font-weight:600;transition:transform .2s,background .25s;backdrop-filter: blur(3px);}
+  .emotion:hover{transform:scale(1.06);background:rgba(255,255,255,0.85);color:#000;}
+  .quote{margin-top:22px;max-width:800px;font-size:clamp(16px,2vw,20px);opacity:0;transition:opacity .4s;}
+  .credit{position:absolute;left:12px;bottom:10px;font-size:12px;color:rgba(255,255,255,0.8);}
+  @media (max-width:600px){ .map {gap:10px} .emotion{padding:10px 14px;font-size:14px} }
+</style>
+</head>
+<body>
+  <div class="wrap" role="application" aria-label="Juice WRLD Emotional Map">
+    <div class="bg" aria-hidden="true"></div>
+    <div class="overlay" aria-hidden="true"></div>
+    <div class="content">
+      <h1>Juice WRLD — Emotional Map</h1>
+      <div class="map" role="list">
+        <button class="emotion" data-quote="“It’s hard to separate the art from the pain.”" data-color="#6a0dad">💭 Sadness</button>
+        <button class="emotion" data-quote="“The world is yours, but you gotta take it.”" data-color="#0077ff">💫 Dreams</button>
+        <button class="emotion" data-quote="“We’re perfectly imperfect, but that’s perfectly fine.”" data-color="#ff3366">❤️ Love</button>
+        <button class="emotion" data-quote="“My emotions are songs I can’t release.”" data-color="#ffaa00">💔 Loss</button>
+        <button class="emotion" data-quote="“You can’t kill the energy, even if I’m gone.”" data-color="#00cc88">🔥 Energy</button>
+      </div>
+      <div class="quote" id="quoteBox" aria-live="polite"></div>
+    </div>
+    <div class="credit">Photo: user-provided</div>
+  </div>
+
+<script>
+const emotions = document.querySelectorAll('.emotion');
+const quoteBox = document.getElementById('quoteBox');
+const wrap = document.querySelector('.wrap');
+
+function showQuote(btn){
+  const quote = btn.getAttribute('data-quote');
+  const color = btn.getAttribute('data-color');
+  quoteBox.style.opacity = 0;
+  setTimeout(()=> {
+    quoteBox.textContent = quote;
+    quoteBox.style.opacity = 1;
+    btn.style.boxShadow = '0 6px 30px rgba(0,0,0,0.4)';
+    // subtle inset glow using a short-lived CSS variable (no dark overlay)
+    wrap.style.boxShadow = `inset 0 0 120px ${color}22`;
+    setTimeout(()=> {
+      wrap.style.boxShadow = '';
+      btn.style.boxShadow = '';
+    }, 1500);
+  }, 200);
+}
+
+emotions.forEach(btn=>{
+  btn.addEventListener('click', ()=> showQuote(btn));
+  btn.addEventListener('keydown', (e)=> { if(e.key==='Enter' || e.key===' ') { e.preventDefault(); showQuote(btn);} });
+});
+
+// show first by default
+setTimeout(()=> { emotions[0].focus(); showQuote(emotions[0]); }, 300);
+</script>
+
+</body>
+</html>
